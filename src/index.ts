@@ -7,6 +7,7 @@ import express from 'express'
 import * as productController from  './controllers/products'
 import * as dbProductController from './services/product-crud-mongo'
 import router from './routes/product.routes'
+import dbRouter from './routes/product-db.routes'
 
 dotenv.config();
 
@@ -52,10 +53,7 @@ app.use(( req, res, next) => {
  * routing the requests
  */
 
-app.use('/products', router)
+app.use('/api/v3/products', router)
 
 
-app.get('/mongo/products', dbProductController.getProductList)
-app.post('/mongo/products', dbProductController.createProduct)
-app.put('/mongo/products', dbProductController.updateroduct)
-app.delete('/mongo/products', dbProductController.deleteproduct)
+app.use('api/v3/mongo/products', dbRouter)

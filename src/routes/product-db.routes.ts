@@ -1,12 +1,14 @@
 import * as dbProductService from '../services/product-crud-mongo'
 import express from 'express'
 
-const router = express.Router()
+const dbRouter = express.Router()
 
-router.route('/')
+dbRouter.route('/')
     .get(dbProductService.getProductList)
     .post(dbProductService.createProduct)
 
-router.route('/:id')
+dbRouter.route('/:id')
     .delete( dbProductService.deleteproduct )
     .put( dbProductService.updateroduct )
+
+export default dbRouter

@@ -1,14 +1,17 @@
 import express from "express"
-import * as productServices from '../services/product-crud.service'
+import * as productController from '../controllers/products'
 
 const router = express.Router()
 
+console.log('reached here ...');
+
+
 router.route('/')
-    .get(productServices.getAllProducts)
-    .post(productServices.createProduct)
+    .get(productController.getAllProductsList)
+    .post(productController.createProduct)
 
 router.route('/:id')
-    .put(productServices.updateProduct)
-    .delete(productServices.deleteProduct)
+    .put(productController.updateProduct)
+    .delete(productController.deleteProduct)
 
 export default router
