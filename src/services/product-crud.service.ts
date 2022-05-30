@@ -1,4 +1,4 @@
-import { Product, products } from "./product";
+import { Product, products } from "../product";
 
 export const createProduct = async (product: Product) : Promise<Product> => {
     products.push(product);
