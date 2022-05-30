@@ -5,6 +5,7 @@ import * as dotenv from  'dotenv'
 import mongoose from 'mongoose'
 import express from 'express'
 import * as productController from  './controllers/products'
+import * as dbProductController from './services/product-crud-mongo'
 
 dotenv.config();
 
@@ -54,3 +55,10 @@ app.get('/products', productController.getAllProductsList)
 app.post('/products', productController.createProduct)
 app.put('/products', productController.updateProduct)
 app.delete('/products', productController.deleteProduct)
+
+
+
+app.get('/mongo/products', dbProductController.getProductList)
+app.post('/mongo/products', dbProductController.createProduct)
+app.put('/mongo/products', dbProductController.updateroduct)
+app.delete('/mongo/products', dbProductController.deleteproduct)

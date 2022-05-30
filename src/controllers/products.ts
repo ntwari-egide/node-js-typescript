@@ -43,7 +43,7 @@ const sendResponseHandler = ( res: any, messag: any, data: any ) => {
                 length: 0 
             } )
 
-    }catch (e) {
-        res.status(404).send(e.message);
+    }catch ( e ) {
+        res.status(404).send("Failed ...");
     }
 }
