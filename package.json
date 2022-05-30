@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/src/index.js",
+    "dev": "pnpm run build && concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
