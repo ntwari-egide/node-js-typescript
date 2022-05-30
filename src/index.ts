@@ -6,13 +6,13 @@ import express from 'express'
 
 dotenv.config();
 
-// if( ! process.env.PORT) {
-//     console.log('Error to get ports')
-//     process.exit(1)
-// }
+if( ! process.env.PORT) {
+    console.log('Error to get ports')
+    process.exit(1)
+}
 
-// const PORT = parseInt( process.env.PORT as string, 10)
-const PORT = 8080
+const PORT = parseInt( process.env.PORT as string, 10)
+// const PORT = 8080
 
 const app = express()
 
