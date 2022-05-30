@@ -25,6 +25,25 @@ const server = app.listen(PORT, () => console.log(`[SERVER] listening on a port 
 
 app.get('/', (req,res) => res.send('Welcome to Node js with typescript template'))
 
+// allowing headers in request
+
+app.use(( req, res, next) => {
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, DELETE, OPTIONS'
+    )
+
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    res.header('Access-Control-Allow-Credentials', "true");
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+
+    next()
+})
+
 
 /**
  * routing the requests
