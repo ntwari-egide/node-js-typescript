@@ -14,5 +14,8 @@ export const setHeaderMiddleWare = ( req: express.Request, res: express.Response
     res.header('Access-Control-Allow-Credentials', "true");
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
 
+    console.log('[SERVER] finished setting up the headers of the application ...');
+    
+
     next()
 }
