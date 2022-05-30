@@ -8,6 +8,8 @@ import * as productController from  './controllers/products'
 import * as dbProductController from './services/product-crud-mongo'
 import router from './routes/product.routes'
 import dbRouter from './routes/product-db.routes'
+import { loggerMiddleWare } from './middlewares/logging'
+import { setHeaderMiddleWare } from './middlewares/setHeaders'
 
 dotenv.config();
 
@@ -31,23 +33,9 @@ app.get('/', (req,res) => res.send('Welcome to Node js with typescript template'
 
 // allowing headers in request
 
-app.use(( req, res, next) => {
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PUT, DELETE, OPTIONS'
-    )
+app.use(( req, res, next) =>  setHeaderMiddleWare (req, res, next) )
 
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    res.header('Access-Control-Allow-Credentials', "true");
-    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-
-    next()
-})
-
+app.use((req,res,next) => loggerMiddleWare(req,res,next))
 
 /**
  * routing the requests
