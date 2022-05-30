@@ -3,13 +3,19 @@ import cors from 'cors'
 import helmet from 'helmet'
 import * as dotenv from  'dotenv'
 import mongoose from 'mongoose'
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import * as productController from  './controllers/products'
 import * as dbProductController from './services/product-crud-mongo'
 import router from './routes/product.routes'
 import dbRouter from './routes/product-db.routes'
 import { loggerMiddleWare } from './middlewares/logging'
 import { setHeaderMiddleWare } from './middlewares/setHeaders'
+import config from 'config';
+import userRouter from './routes/user.routes';
+import authRouter from './routes/auth.routes';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan'
+
 
 dotenv.config();
 
@@ -24,8 +30,27 @@ const PORT = parseInt( process.env.PORT as string, 10)
 const app = express()
 
 app.use(helmet())
-app.use(cors())
 app.use(express.json())
+
+// Middleware
+
+// 1. Body Parser
+app.use(express.json({ limit: '10kb' }));
+
+// 2. Cookie Parser
+app.use(cookieParser());
+
+// 3. Logger
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+
+// 4. Cors
+app.use(
+  cors({
+    origin: config.get<string>('origin'),
+    credentials: true,
+  })
+);
+
 
 const server = app.listen(PORT, () => console.log(`[SERVER] listening on a port ${PORT}`));
 
@@ -45,3 +70,34 @@ app.use('/api/v3/products', router)
 
 
 app.use('api/v3/mongo/products', dbRouter)
+
+app.use(
+    cors({
+      origin: config.get<string>('origin'),
+      credentials: true,
+    })
+);
+
+// 5. Routes
+app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
+
+// Global Error Handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    err.status = err.status || 'error';
+    err.statusCode = err.statusCode || 500;
+  
+    res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+    });
+});
+
+
+// UnKnown Routes
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+    const err = new Error(`Route ${req.originalUrl} not found`) as any;
+    err.statusCode = 404;
+    next(err);
+});
+  
