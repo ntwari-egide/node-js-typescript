@@ -56,7 +56,25 @@ app.use(
 
 const server = app.listen(PORT, () => console.log(`[SERVER] listening on a port ${PORT}`));
 
-app.get('/', (req,res) => res.send('Welcome to Node js with typescript template'))
+// app.get('/', (req,res) => res.send('Welcome to Node js with typescript template'))
+
+
+// use of redis in caching
+const REDIS_EXPERATION_TIME = 20;
+const redisClient = Redis.createClient()
+
+app.get('/photos', async ( req, res ) => {
+  // const albumId = req.query.albumId
+
+  // const { data } = await axios.get('https://jsonplaceholder.typicode.com/photos', {
+  //   params: {albumId}
+  // })
+
+  // redisClient.setEx('photos', REDIS_EXPERATION_TIME, JSON.stringify(data))
+
+  res.send('hello welcome')
+
+})
 
 // allowing headers in request
 
@@ -64,22 +82,6 @@ app.use(( req, res, next) =>  setHeaderMiddleWare (req, res, next) )
 
 app.use((req,res,next) => loggerMiddleWare(req,res,next))
 
-// use of redis in caching
-const REDIS_EXPERATION_TIME = 20;
-const redisClient = Redis.createClient()
-
-app.get('/api/v3/photos', async ( req, res ) => {
-  const albumId = req.query.albumId
-
-  const { data } = await axios.get('https://jsonplaceholder.typicode.com/photos', {
-    params: {albumId}
-  })
-
-  redisClient.setEx('photos', REDIS_EXPERATION_TIME, JSON.stringify(data))
-
-  res.json(data)
-
-})
 
 
 

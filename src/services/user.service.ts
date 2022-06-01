@@ -2,7 +2,7 @@ import userModel, { User } from "../models/users";
 import { omit, get } from 'lodash';
 import { FilterQuery, QueryOptions } from 'mongoose';
 import config from 'config';
-import { excludedFields } from '../controllers/auth.controller';
+// import { excludedFields } from '../controllers/authentication'
 import { signJwt } from '../utils/jwt';
 import redisClient from '../utils/connectRedis';
 import { DocumentType } from '@typegoose/typegoose';
@@ -10,13 +10,13 @@ import { DocumentType } from '@typegoose/typegoose';
 export const createUser = async ( input: Partial<User>) => {
     const user = await userModel.create(input);
 
-    return omit(user.toJSON(), excludedFields )
+    return omit(user.toJSON() )
 }
 
 export const findUserById = async (id: string) => {
     const user = await userModel.findById(id)
 
-    return omit(user?.toJSON, excludedFields)
+    return omit(user?.toJSON())
 }
 
 // Find All users
