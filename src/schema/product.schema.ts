@@ -1,5 +1,6 @@
 import { number, object, string } from "zod";
 
+
 export const createProductSchema = object({
 
     body: object({
@@ -12,6 +13,7 @@ export const createProductSchema = object({
     }),
 
 })
+
 
 export const updateProductSchema = object({
 

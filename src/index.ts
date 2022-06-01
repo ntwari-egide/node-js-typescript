@@ -15,6 +15,8 @@ import userRouter from './routes/user.routes';
 import authRouter from './routes/auth.routes';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan'
+import * as Redis from 'redis'
+import axios from 'axios'
 
 
 dotenv.config();
@@ -61,6 +63,25 @@ app.get('/', (req,res) => res.send('Welcome to Node js with typescript template'
 app.use(( req, res, next) =>  setHeaderMiddleWare (req, res, next) )
 
 app.use((req,res,next) => loggerMiddleWare(req,res,next))
+
+// use of redis in caching
+const REDIS_EXPERATION_TIME = 20;
+const redisClient = Redis.createClient()
+
+app.get('/api/v3/photos', async ( req, res ) => {
+  const albumId = req.query.albumId
+
+  const { data } = await axios.get('https://jsonplaceholder.typicode.com/photos', {
+    params: {albumId}
+  })
+
+  redisClient.setEx('photos', REDIS_EXPERATION_TIME, JSON.stringify(data))
+
+  res.json(data)
+
+})
+
+
 
 /**
  * routing the requests
